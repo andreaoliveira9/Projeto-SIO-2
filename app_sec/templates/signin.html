@@ -1,0 +1,330 @@
+    
+    <!DOCTYPE html>
+    <html lang="en">
+      <!-- Basic -->
+    
+      <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+        <!-- Mobile Metas -->
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+        <!-- Site Metas -->
+        <title>Deti Store</title>
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+    
+        <!-- Site Icons -->
+        <link
+          rel="shortcut icon"
+          href="../static/images/favicon.ico"
+          type="image/x-icon"
+        />
+        <link rel="apple-touch-icon" href="../static/images/apple-touch-icon.png" />
+    
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="../static/css/bootstrap.min.css" />
+        <!-- Site CSS -->
+        <link rel="stylesheet" href="../static/css/style.css" />
+        <!-- Responsive CSS -->
+        <link rel="stylesheet" href="../static/css/responsive.css" />
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="../static/css/custom.css" />
+
+        <script src="https://www.google.com/recaptcha/enterprise.js?render=6LeFQDkpAAAAABKdp4pinNyxhov9pQeL493lwh1_"></script>
+        <style>
+          form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 500px;
+          }
+        
+          h1 {
+            text-align: center;
+            color: #162442;
+          }
+        
+          label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+          }
+        
+          input[type="text"],
+          input[type="password"],
+          input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+          }
+        
+          input[type="submit"] {
+            background-color: #162442;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+          }
+        
+          input[type="submit"]:hover {
+            background-color: #1c2a4b;
+          }
+        
+          .alert {
+            margin-bottom: 15px;
+          }
+          
+          #togglePasswordContainer {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+          }
+
+          #password-strength-text {
+            margin-bottom: 15px;
+          }    
+
+          #password-strength-meter {
+            width: 100%;
+            height: 20px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            background-color: #eee; /* Cor padrão da barra de progresso */
+          }
+        </style>
+        
+      </head>
+
+    <body>
+    <!-- Start Main Top -->
+    <header class="main-header">
+        <!-- Start Navigation -->
+        <nav
+        class="navbar navbar-expand-lg navbar-light bg-light navbar-default bootsnav"
+      >
+        <div class="container">
+          <!-- Start Header Navigation -->
+          <div class="navbar-header">
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbar-menu"
+              aria-controls="navbars-rs-food"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <i class="fa fa-bars"></i>
+            </button>
+            <a class="navbar-brand" href="/"
+              ><img
+                src="../static/images/logo-deti-black.png"
+                style="width: 300px"
+                class="logo"
+                alt=""
+            /></a>
+          </div>
+          <!-- End Header Navigation -->
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="navbar-menu">
+            <ul
+              class="nav navbar-nav ml-auto"
+              data-in="fadeInDown"
+              data-out="fadeOutUp"
+            >
+              <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/shop">Products</a>
+              </li>
+            </ul>
+          </div>
+          <!-- /.navbar-collapse -->
+        </div>
+      </nav>
+        </br>
+        <!-- /.navbar-collapse -->
+        <div style="display: flex; align-items: center; justify-content: center;">
+          <form action="/form_signin" method="post" enctype="multipart/form-data" id="form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <h1>New User Registration</h1>
+        
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+              {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+        
+            <label for="name">Name:</label>
+            <input type="text" name="name" required>
+        
+            <label for="email">Email:</label>
+            <input type="text" name="email" required>
+        
+            <label for="phone">Phone Number:</label>
+            <input type="text" name="phone" required>
+        
+            <label for="username">Username:</label>
+            <input type="text" name="username" required>
+        
+            <label for="password">Password:</label>
+            <div id="togglePasswordContainer" style="display: flex; align-items: center;">
+                <input type="password" name="password" id="password" oninput="checkPasswordStrength()" required>
+                <button type="button" id="togglePasswordButton" onclick="togglePasswordVisibility()" style="margin-left: 10px; background-color: white; border: none; display: flex; align-items: center;">
+                    <img src="./static/images/eye-on-icon.png" alt="Show Password" id="eyeIcon" style="width: 20px; height: auto; border: none; padding: 0; margin: auto;">
+                </button>
+            </div>
+
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" name='confirm_password'><br>
+            <progress id="password-strength-meter" max="5" value="0"></progress>
+            <p id="password-strength-text">Password Strength: Very Weak</p>
+
+        
+            <label for="security_question">Security Question:</label>
+            <select name="security_question" class="form-control selectpicker" data-live-search="true" required>
+              <option value="question1">What is your favorite color?</option>
+              <option value="question2">What is your favorite book?</option>
+              <option value="question3">What is the name of your first pet?</option>
+              <!-- Adicione mais opções de perguntas de segurança conforme necessário -->
+            </select>
+        
+            <label for="security_answer">Security Answer:</label>
+            <input type="text" name="security_answer" class="form-control" required>
+        
+            <label for="image">Profile Picture:</label>
+            <input type="file" id="image" name="image" class="hidden">
+
+            <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY"></div>
+        
+            <br>
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <p>Already have an account?  </p><br><br>
+                <a style="color:#162442; background-color: transparent; border: 1px; font-weight: bold; padding-left: 5px;" href="/login">  Log In!</a>
+            </div>
+            <button class="g-recaptcha"
+                data-sitekey="6LeFQDkpAAAAABKdp4pinNyxhov9pQeL493lwh1_"
+                data-callback='onSubmit'
+                data-action='submit'
+                style="width: 100%; background-color:#162442; color:white">
+              Sign In
+            </button>
+            
+          </form>
+        </div>
+        <br>
+        
+
+    
+        <!-- ALL JS FILES -->
+        <script src="../static/js/jquery-3.2.1.min.js"></script>
+        <script src="../static/js/popper.min.js"></script>
+        <script src="../static/js/bootstrap.min.js"></script>
+        <!-- ALL PLUGINS -->
+        <script src="../static/js/jquery.superslides.min.js"></script>
+        <script src="../static/js/bootstrap-select.js"></script>
+        <script src="../static/js/inewsticker.js"></script>
+        <script src="../static/js/bootsnav.js."></script>
+        <script src="../static/js/images-loded.min.js"></script>
+        <script src="../static/js/isotope.min.js"></script>
+        <script src="../static/js/owl.carousel.min.js"></script>
+        <script src="../static/js/baguetteBox.min.js"></script>
+        <script src="../static/js/form-validator.min.js"></script>
+        <script src="../static/js/contact-form-script.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
+
+        <!-- <script src="../static/js/custom.js"></script> -->
+        <script>
+          function checkPasswordStrength() {
+          var password = document.getElementById('password').value;
+          var result = zxcvbn(password);
+
+          // Update the password strength meter
+          var strengthMeter = document.getElementById('password-strength-meter');
+          strengthMeter.value = result.score + 1;
+
+          // Update the text based on the password strength
+          var strengthText = document.getElementById('password-strength-text');
+          strengthText.innerHTML = 'Password Strength: ' + getStrengthText(result.score);
+          
+          // Adicione a lógica para alterar a cor do texto com base na força da senha
+          switch (result.score) {
+            case 0:
+              strengthText.style.color = 'red'; // Very Weak
+              strengthMeter.style.background = 'red';
+              break;
+            case 1:
+              strengthText.style.color = 'orange'; // Weak
+              strengthMeter.style.background = 'orange'; 
+              break;
+            case 2:
+              strengthText.style.color = 'yellow'; // Moderate
+              strengthMeter.style.background = 'yellow'; 
+              break;
+            case 3:
+              strengthText.style.color = 'green'; // Strong
+              strengthMeter.style.background = 'green'; 
+              break;
+            case 4:
+              strengthText.style.color = 'darkgreen'; // Very Strong
+              strengthMeter.style.background = 'darkgreen'; 
+              break;
+            default:
+              strengthText.style.color = '#333'; // Cor padrão
+              strengthMeter.style.background = '#eee'; 
+          }
+        }
+
+          function getStrengthText(score) {
+            switch (score) {
+              case 0:
+                return 'Very Weak';
+              case 1:
+                return 'Weak';
+              case 2:
+                return 'Moderate';
+              case 3:
+                return 'Strong';
+              case 4:
+                return 'Very Strong';
+              default:
+                return '';
+            }
+          }
+
+          function togglePasswordVisibility() {
+            var passwordInput = document.getElementById('password');
+            var eyeIcon = document.getElementById('eyeIcon');
+
+            if (passwordInput.type === 'password') {
+              passwordInput.type = 'text';
+              eyeIcon.src = './static/images/eye-off-icon.png';
+            } else {
+              passwordInput.type = 'password';
+              eyeIcon.src = './static/images/eye-on-icon.png';
+            }
+          }
+        </script>
+        <script>
+          function onSubmit(token) {
+            document.getElementById("form").submit();
+          }
+        </script>
+    </body>
+</html>
