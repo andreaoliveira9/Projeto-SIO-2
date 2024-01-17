@@ -1,5 +1,7 @@
 # Second SIO project
 
+Nota: 20
+
 ## Execute
 
 To execute the project, cd into the app_sec folder and follow the instructions presented bellow.
